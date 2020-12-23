@@ -31,12 +31,12 @@ S3LATEST=${S3PATH}latest.dump.gz
 
 aws configure set default.s3.signature_version s3v4
 aws configure set plugins.endpoint awscli_plugin_endpoint
-aws configure set default.region "${BUCKET_REGION}"
+aws configure set default.region ${BUCKET_REGION}
 aws configure set default.s3.max_concurrent_requests 100
 aws configure set default.s3.max_queue_size 1000
 aws configure set default.s3.multipart_threshold 50GB
 aws configure set default.s3.multipart_chunksize 5GB
-aws configure set default.s3api.endpoint_url "${S3_ENDPOINT}"
+aws configure set default.s3api.endpoint_url ${S3_ENDPOINT}
 
 echo "=> Backup started"
 if mongodump --host ${MONGODB_HOST} --port ${MONGODB_PORT} ${USER_STR}${PASS_STR}${DB_STR} --archive=\${BACKUP_NAME} --gzip ${EXTRA_OPTS} && aws s3 cp \${BACKUP_NAME} \${S3BACKUP} ${REGION_STR} && aws s3 cp \${S3BACKUP} \${S3LATEST} ${REGION_STR} && rm \${BACKUP_NAME} ;then
