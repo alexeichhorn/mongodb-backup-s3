@@ -90,6 +90,8 @@ mongodbbackup:
 
 `AWS_SECRET_ACCESS_KEY`: - your aws secret access key (for your s3 bucket)
 
+`S3_ENDPOINT`: - https url of bucket endpoint (if not AWS)
+
 `BUCKET`: - your s3 bucket
 
 `BUCKET_REGION`: - your s3 bucket' region (eg `us-east-2` for Ohio). Optional. Add if you get an error `A client error (PermanentRedirect)`
