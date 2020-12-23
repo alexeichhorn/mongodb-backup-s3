@@ -36,7 +36,7 @@ echo "=> Creating backup script"
 rm -f /backup.sh
 cat <<EOF >> /backup.sh
 #!/bin/bash
-TIMESTAMP=\`/bin/date +"%Y%m%dT%H%M%S"\`
+TIMESTAMP=\`/bin/date +"%Y-%m-%dT_%H-%M-%S"\`
 BACKUP_NAME=\${TIMESTAMP}.dump.gz
 S3BACKUP=${S3PATH}\${BACKUP_NAME}
 S3LATEST=${S3PATH}latest.dump.gz
