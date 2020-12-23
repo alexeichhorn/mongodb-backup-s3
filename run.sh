@@ -36,6 +36,7 @@ aws configure set default.s3.max_concurrent_requests 100
 aws configure set default.s3.max_queue_size 1000
 aws configure set default.s3.multipart_threshold 50GB
 aws configure set default.s3.multipart_chunksize 5GB
+aws configure set default.s3.endpoint_url ${S3_ENDPOINT}
 aws configure set default.s3api.endpoint_url ${S3_ENDPOINT}
 
 echo "=> Backup started"
