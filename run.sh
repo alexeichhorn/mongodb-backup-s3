@@ -20,15 +20,6 @@ S3PATH="s3://$BUCKET/$BACKUP_FOLDER"
 # Export AWS Credentials into env file for cron job
 printenv | sed 's/^\([a-zA-Z0-9_]*\)=\(.*\)$/export \1="\2"/g' | grep -E "^export AWS" > /root/project_env.sh
 
-echo "=> Creating backup script"
-rm -f /backup.sh
-cat <<EOF >> /backup.sh
-#!/bin/bash
-TIMESTAMP=\`/bin/date +"%Y%m%dT%H%M%S"\`
-BACKUP_NAME=\${TIMESTAMP}.dump.gz
-S3BACKUP=${S3PATH}\${BACKUP_NAME}
-S3LATEST=${S3PATH}latest.dump.gz
-
 aws configure set default.s3.signature_version s3v4
 aws configure set plugins.endpoint awscli_plugin_endpoint
 aws configure set default.region ${BUCKET_REGION}
@@ -40,6 +31,15 @@ aws configure set default.s3.endpoint_url ${S3_ENDPOINT}
 aws configure set default.s3api.endpoint_url ${S3_ENDPOINT}
 aws configure set default.aws_access_key_id ${AWS_ACCESS_KEY}
 aws configure set default.aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+
+echo "=> Creating backup script"
+rm -f /backup.sh
+cat <<EOF >> /backup.sh
+#!/bin/bash
+TIMESTAMP=\`/bin/date +"%Y%m%dT%H%M%S"\`
+BACKUP_NAME=\${TIMESTAMP}.dump.gz
+S3BACKUP=${S3PATH}\${BACKUP_NAME}
+S3LATEST=${S3PATH}latest.dump.gz
 
 echo "=> Backup started"
 if mongodump --host ${MONGODB_HOST} --port ${MONGODB_PORT} ${USER_STR}${PASS_STR}${DB_STR} --archive=\${BACKUP_NAME} --gzip ${EXTRA_OPTS} && aws s3 cp \${BACKUP_NAME} \${S3BACKUP} ${REGION_STR} && aws s3 cp \${S3BACKUP} \${S3LATEST} ${REGION_STR} && rm \${BACKUP_NAME} ;then
