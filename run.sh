@@ -38,6 +38,8 @@ aws configure set default.s3.multipart_threshold 50GB
 aws configure set default.s3.multipart_chunksize 5GB
 aws configure set default.s3.endpoint_url ${S3_ENDPOINT}
 aws configure set default.s3api.endpoint_url ${S3_ENDPOINT}
+aws configure set default.aws_access_key_id ${AWS_ACCESS_KEY}
+aws configure set default.aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
 
 echo "=> Backup started"
 if mongodump --host ${MONGODB_HOST} --port ${MONGODB_PORT} ${USER_STR}${PASS_STR}${DB_STR} --archive=\${BACKUP_NAME} --gzip ${EXTRA_OPTS} && aws s3 cp \${BACKUP_NAME} \${S3BACKUP} ${REGION_STR} && aws s3 cp \${S3BACKUP} \${S3LATEST} ${REGION_STR} && rm \${BACKUP_NAME} ;then
